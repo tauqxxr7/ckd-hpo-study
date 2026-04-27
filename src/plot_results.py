@@ -115,12 +115,13 @@ def plot_hpo_method_comparison(
     )
 
     plt.figure(figsize=(12, 6))
+    use_dodge = summary["dataset"].nunique() > 1
     sns.pointplot(
         data=summary,
         x="hpo_method",
         y="mean_f1_score",
         hue="dataset",
-        dodge=0.35,
+        dodge=0.35 if use_dodge else False,
         markers="o",
         linestyles="-",
     )

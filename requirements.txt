@@ -1,11 +1,14 @@
 numpy
 pandas
 scikit-learn
-xgboost
 matplotlib
 seaborn
-optuna
-scikit-optimize
-hyperopt
-cma
 jupyter
+ucimlrepo
+
+# Optional advanced HPO/model packages:
+# xgboost
+# optuna
+# scikit-optimize
+# hyperopt
+# cma

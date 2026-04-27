@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Iterable
 
 import pandas as pd
+import numpy as np
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
@@ -14,6 +15,22 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 
 RANDOM_SEED = 42
+UCI_NUMERIC_COLUMNS = [
+    "age",
+    "bp",
+    "sg",
+    "al",
+    "su",
+    "bgr",
+    "bu",
+    "sc",
+    "sod",
+    "pot",
+    "hemo",
+    "pcv",
+    "wbcc",
+    "rbcc",
+]
 
 
 def load_uci_ckd(path: str | Path) -> pd.DataFrame:
@@ -43,6 +60,49 @@ def split_features_target(
     if target_column not in dataframe.columns:
         raise ValueError(f"Target column '{target_column}' not found.")
     return dataframe.drop(columns=[target_column]), dataframe[target_column]
+
+
+def clean_uci_ckd_dataframe(
+    dataframe: pd.DataFrame,
+    target_column: str = "class",
+) -> tuple[pd.DataFrame, pd.Series]:
+    """Clean raw UCI CKD rows and return feature matrix plus binary target."""
+    clean_data = dataframe.copy()
+    clean_data.columns = [column.strip().lower() for column in clean_data.columns]
+
+    if target_column not in clean_data.columns:
+        raise ValueError(f"Target column '{target_column}' not found in UCI CKD data.")
+
+    for column in clean_data.select_dtypes(include=["object"]).columns:
+        clean_data[column] = (
+            clean_data[column]
+            .astype("string")
+            .str.strip()
+            .str.replace("\t", "", regex=False)
+            .replace({"?": pd.NA, "": pd.NA, "<NA>": pd.NA})
+        )
+
+    for column in UCI_NUMERIC_COLUMNS:
+        if column in clean_data.columns:
+            clean_data[column] = pd.to_numeric(clean_data[column], errors="coerce")
+
+    target = clean_data[target_column].astype("string").str.lower().str.strip()
+    target = target.str.replace("\t", "", regex=False)
+    target = target.map({"ckd": 1, "notckd": 0})
+    valid_rows = target.notna()
+
+    features = clean_data.loc[valid_rows].drop(columns=[target_column])
+    features = features.astype(object).where(pd.notna(features), np.nan)
+    labels = target.loc[valid_rows].astype(int)
+    return features, labels
+
+
+def prepare_features_and_target(
+    dataframe: pd.DataFrame,
+    target_column: str = "class",
+) -> tuple[pd.DataFrame, pd.Series]:
+    """Accept raw CKD data and return cleaned X and y."""
+    return clean_uci_ckd_dataframe(dataframe, target_column=target_column)
 
 
 def infer_feature_types(
@@ -80,6 +140,21 @@ def build_preprocessor(
             ("categorical", categorical_pipeline, list(categorical_features)),
         ]
     )
+
+
+def build_model_pipeline(
+    estimator,
+    features: pd.DataFrame,
+    scale_numeric: bool = True,
+) -> Pipeline:
+    """Build a preprocessing-plus-model pipeline for raw CKD features."""
+    numeric_features, categorical_features = infer_feature_types(features)
+    preprocessor = build_preprocessor(
+        numeric_features=numeric_features,
+        categorical_features=categorical_features,
+        scale_numeric=scale_numeric,
+    )
+    return Pipeline(steps=[("preprocessor", preprocessor), ("model", estimator)])
 
 
 def make_train_test_split(

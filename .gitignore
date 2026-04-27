@@ -4,6 +4,7 @@ __pycache__/
 .venv/
 *.pyc
 .matplotlib-cache/
+*.pkl
 
 # Raw/private clinical data must not be committed.
 data/raw/

@@ -15,7 +15,7 @@ def build_random_forest(random_state: int = RANDOM_SEED) -> RandomForestClassifi
         n_estimators=300,
         class_weight="balanced",
         random_state=random_state,
-        n_jobs=-1,
+        n_jobs=1,
     )
 
 
@@ -41,7 +41,7 @@ def build_xgboost(random_state: int = RANDOM_SEED):
         colsample_bytree=0.9,
         eval_metric="logloss",
         random_state=random_state,
-        n_jobs=-1,
+        n_jobs=1,
     )
 
 

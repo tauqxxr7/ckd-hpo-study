@@ -5,39 +5,67 @@ Repository for the research paper:
 **Comparative Evaluation of Hyperparameter Optimization Techniques for Chronic Kidney Disease Prediction: A Multi-Dataset Study**
 
 Author: **Tauqeer Sameer Bharde**  
-Artificial Intelligence & Data Science Engineering  
-SIES Graduate School of Technology, Mumbai, India
+Artificial Intelligence and Data Science Engineering  
+SIES Graduate School of Technology, Mumbai, Maharashtra, India
 
 ## Project Overview
 
-This repository provides a journal-ready research package for comparing hyperparameter optimization (HPO) strategies for chronic kidney disease (CKD) prediction across two clinical datasets. The study evaluates whether commonly used HPO methods improve predictive performance consistently across dataset scale and clinical context, while also considering runtime cost.
+This repository provides a journal-ready and runnable research package for comparing hyperparameter optimization (HPO) strategies for chronic kidney disease (CKD) prediction. The included end-to-end pipeline downloads the public UCI CKD dataset, preprocesses it, trains CPU-compatible machine learning models, runs Grid Search and Random Search, evaluates metrics, saves model artifacts, and regenerates result figures.
 
-The package includes a Springer LNCS-style manuscript draft, reproducible experiment code, result summary tables, data access guidance, and reviewer-readiness documentation.
+The manuscript also discusses an eICU-based extension, but raw eICU data are not distributed because access requires PhysioNet credentialing.
+
+## Quick Start
+
+```bash
+git clone https://github.com/tauqxxr7/ckd-hpo-study.git
+cd ckd-hpo-study
+pip install -r requirements.txt
+python src/main.py
+```
+
+Running `python src/main.py` will:
+
+- download the UCI CKD dataset into `data/raw/`
+- train Random Forest and SVM models, with XGBoost included only when installed
+- run Grid Search and Random Search
+- save metrics into `results/performance_table.csv`
+- save runtime summaries into `results/runtime_table.csv`
+- save trained model pickle files into `results/models/`
+- generate figures in `paper/figures/`
+
+The pipeline runs on CPU and does not require a GPU.
 
 ## Research Objective
 
-The objective is to compare Grid Search, Random Search, Bayesian Optimization/TPE, CMA-ES, and Hyperband for tuning machine learning models used in CKD prediction. The evaluation focuses on predictive performance and computational efficiency rather than deployment readiness.
+The objective is to compare Grid Search, Random Search, Bayesian Optimization/TPE, CMA-ES, and Hyperband for tuning machine learning models used in CKD prediction. The runnable pipeline focuses on dependency-light Grid Search and Random Search so that new users can reproduce baseline results with one command.
 
 ## Datasets
 
-- **UCI Chronic Kidney Disease dataset**: A public tabular CKD benchmark dataset available from the UCI Machine Learning Repository.
-- **eICU Collaborative Research Database**: A larger critical-care dataset requiring credentialed access through PhysioNet.
+- **UCI Chronic Kidney Disease dataset**: A public tabular CKD benchmark dataset available from the UCI Machine Learning Repository. The runnable pipeline downloads this dataset automatically.
+- **eICU Collaborative Research Database**: A larger critical-care dataset requiring credentialed access through PhysioNet. It is discussed in the manuscript but not downloaded by the pipeline.
 
 Raw clinical datasets are not committed to this repository. See [data/README.md](data/README.md) for access and ethics notes.
 
 ## Models
 
 - Random Forest
-- XGBoost
 - Support Vector Machine (SVM)
+- XGBoost, optional if the `xgboost` package is available
 
 ## Hyperparameter Optimization Methods
 
+The runnable pipeline executes:
+
 - Grid Search
 - Random Search
+
+The repository also includes optional helper functions for:
+
 - Bayesian Optimization / Tree-structured Parzen Estimator (TPE)
 - Covariance Matrix Adaptation Evolution Strategy (CMA-ES)
 - Hyperband
+
+Optional HPO methods are wrapped so missing optional libraries do not break the main pipeline.
 
 ## Evaluation Metrics
 
@@ -46,16 +74,7 @@ Raw clinical datasets are not committed to this repository. See [data/README.md]
 - Recall
 - Runtime
 
-Results are reported as mean ± standard deviation where repeated validation estimates are available.
-
-## Key Results
-
-- On the UCI CKD dataset, the best observed result was **SVM + Random Search = 99.33% ± 0.36% F1-score**.
-- On the eICU dataset, the strongest summarized HPO result was **Random Search = 94.54% F1-score**.
-- Random Search provided the best practical time-performance tradeoff across the summarized experiments.
-- Grid Search was computationally expensive and showed degraded performance on the larger eICU setting, likely because exhaustive search over a fixed grid became inefficient under a constrained budget.
-
-These results should be interpreted as experimental findings from the reported setup, not as evidence of clinical deployment readiness.
+Results are reported as percentages in the generated CSV files.
 
 ## Reproducibility
 
@@ -63,30 +82,8 @@ The intended reproducibility protocol is:
 
 - Random seed: `42`
 - Validation: 5-fold stratified cross-validation
-- Search budget: same budget across HPO methods where applicable
-- Preprocessing: fitted only on training folds to reduce data leakage risk
-- Reporting: mean ± standard deviation across validation folds or repeated runs
-
-## How to Run
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Prepare datasets locally according to [data/README.md](data/README.md). Do not commit private clinical data.
-
-Run the experiment modules as needed:
-
-```bash
-python src/train_models.py
-python src/optimize_hpo.py
-python src/evaluate.py
-python src/plot_results.py
-```
-
-The current source files provide reusable experiment scaffolding and plotting utilities. Dataset-specific paths and feature definitions should be configured locally before full execution.
+- Preprocessing: fitted only on training folds through scikit-learn pipelines
+- Reporting: test-set precision, recall, F1-score, and cross-validation standard deviation
 
 ## Repository Structure
 
@@ -103,6 +100,8 @@ ckd-hpo-study/
 ├── notebooks/
 │   └── ckd_hpo_experiments.ipynb
 ├── src/
+│   ├── data_loader.py
+│   ├── main.py
 │   ├── preprocessing.py
 │   ├── train_models.py
 │   ├── optimize_hpo.py
@@ -123,11 +122,11 @@ If you use this repository, please cite:
 ```text
 Bharde, T. S. Comparative Evaluation of Hyperparameter Optimization Techniques
 for Chronic Kidney Disease Prediction: A Multi-Dataset Study.
-SIES Graduate School of Technology, Mumbai, India.
+SIES Graduate School of Technology, Mumbai, Maharashtra, India.
 ```
 
 ## Author
 
 Tauqeer Sameer Bharde  
-Artificial Intelligence & Data Science Engineering  
-SIES Graduate School of Technology, Mumbai, India
+Artificial Intelligence and Data Science Engineering  
+SIES Graduate School of Technology, Mumbai, Maharashtra, India

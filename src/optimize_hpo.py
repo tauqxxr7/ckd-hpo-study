@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import Any
+import warnings
 
 import numpy as np
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold
@@ -24,6 +25,7 @@ def run_grid_search(
     y,
     scoring: str = "f1",
     n_splits: int = 5,
+    n_jobs: int = 1,
 ) -> GridSearchCV:
     """Run exhaustive Grid Search."""
     search = GridSearchCV(
@@ -31,7 +33,7 @@ def run_grid_search(
         param_grid=param_grid,
         scoring=scoring,
         cv=make_cv(n_splits=n_splits),
-        n_jobs=-1,
+        n_jobs=n_jobs,
         refit=True,
     )
     return search.fit(x, y)
@@ -46,6 +48,7 @@ def run_random_search(
     scoring: str = "f1",
     n_splits: int = 5,
     random_state: int = RANDOM_SEED,
+    n_jobs: int = 1,
 ) -> RandomizedSearchCV:
     """Run Random Search with a fixed budget."""
     search = RandomizedSearchCV(
@@ -55,7 +58,7 @@ def run_random_search(
         scoring=scoring,
         cv=make_cv(n_splits=n_splits, random_state=random_state),
         random_state=random_state,
-        n_jobs=-1,
+        n_jobs=n_jobs,
         refit=True,
     )
     return search.fit(x, y)
@@ -74,11 +77,14 @@ def run_bayesian_optimization_tpe(
     """
     try:
         from hyperopt import Trials, fmin, tpe
-    except ImportError as exc:
-        raise ImportError(
+    except ImportError:
+        warnings.warn(
             "hyperopt is required for TPE optimization. Install it with "
-            "`pip install hyperopt`."
-        ) from exc
+            "`pip install hyperopt`. Skipping Bayesian Optimization/TPE.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+        return None, None
 
     trials = Trials()
     result = fmin(
@@ -105,11 +111,14 @@ def run_skopt_bayesian_search(
     """Run Bayesian optimization using scikit-optimize if available."""
     try:
         from skopt import BayesSearchCV
-    except ImportError as exc:
-        raise ImportError(
+    except ImportError:
+        warnings.warn(
             "scikit-optimize is required for BayesSearchCV. Install it with "
-            "`pip install scikit-optimize`."
-        ) from exc
+            "`pip install scikit-optimize`. Skipping Bayesian search.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+        return None
 
     search = BayesSearchCV(
         estimator=estimator,
@@ -118,7 +127,7 @@ def run_skopt_bayesian_search(
         scoring=scoring,
         cv=make_cv(n_splits=n_splits, random_state=random_state),
         random_state=random_state,
-        n_jobs=-1,
+        n_jobs=1,
         refit=True,
     )
     return search.fit(x, y)
