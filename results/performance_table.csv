@@ -1,0 +1,21 @@
+dataset,model,hpo_method,f1_score,std_dev,precision,recall
+UCI,Random Forest,Grid Search,98.62,0.51,98.70,98.55
+UCI,Random Forest,Random Search,98.95,0.44,99.02,98.88
+UCI,Random Forest,Bayesian Optimization/TPE,98.87,0.47,98.96,98.79
+UCI,XGBoost,Grid Search,98.48,0.58,98.50,98.46
+UCI,XGBoost,Random Search,99.08,0.41,99.14,99.02
+UCI,XGBoost,Hyperband,98.91,0.46,98.98,98.84
+UCI,SVM,Grid Search,98.74,0.49,98.82,98.66
+UCI,SVM,Random Search,99.33,0.36,99.39,99.27
+UCI,SVM,Bayesian Optimization/TPE,99.12,0.39,99.18,99.06
+UCI,SVM,CMA-ES,98.98,0.43,99.04,98.92
+eICU,Random Forest,Grid Search,92.31,0.55,92.80,91.83
+eICU,Random Forest,Random Search,94.54,0.42,94.90,94.18
+eICU,Random Forest,Bayesian Optimization/TPE,94.21,0.45,94.58,93.85
+eICU,Random Forest,Hyperband,93.92,0.48,94.25,93.60
+eICU,XGBoost,Grid Search,92.88,0.53,93.20,92.57
+eICU,XGBoost,Random Search,94.36,0.44,94.71,94.02
+eICU,XGBoost,Bayesian Optimization/TPE,94.18,0.46,94.50,93.86
+eICU,SVM,Grid Search,91.96,0.61,92.30,91.63
+eICU,SVM,Random Search,93.74,0.50,94.02,93.47
+eICU,SVM,CMA-ES,93.41,0.52,93.77,93.05

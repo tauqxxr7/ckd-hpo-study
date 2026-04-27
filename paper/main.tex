@@ -1,0 +1,176 @@
+\documentclass[runningheads]{llncs}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Comparative Evaluation of Hyperparameter Optimization Techniques for Chronic Kidney Disease Prediction: A Multi-Dataset Study}
+
+\author{Tauqeer Sameer Bharde}
+
+\institute{Artificial Intelligence \& Data Science Engineering,\\
+SIES Graduate School of Technology, Mumbai, India\\
+\email{tauqeer.bharde@example.com}}
+
+\maketitle
+
+\begin{abstract}
+Chronic kidney disease (CKD) prediction using machine learning has received substantial attention because early identification may support timely clinical investigation and risk stratification. However, reported model performance can be sensitive to hyperparameter optimization (HPO), dataset characteristics, preprocessing decisions, and validation design. This study compares five HPO strategies, namely Grid Search, Random Search, Bayesian Optimization with Tree-structured Parzen Estimators, Covariance Matrix Adaptation Evolution Strategy, and Hyperband, for tuning Random Forest, XGBoost, and Support Vector Machine classifiers across the UCI CKD dataset and an eICU-derived cohort. The evaluation uses F1-score, precision, recall, and runtime, with 5-fold stratified cross-validation and preprocessing fitted only within training folds. The summarized experiments indicate that SVM tuned with Random Search achieved the highest UCI CKD F1-score of 99.33\% $\pm$ 0.36\%, while Random Search achieved the strongest summarized eICU result of 94.54\% F1-score. Random Search also offered the most favorable time-performance tradeoff in the evaluated setup, whereas Grid Search became less efficient on the larger dataset. The findings support the need to report HPO procedures transparently in clinical machine learning studies and to evaluate computational cost alongside predictive performance.
+\keywords{Chronic Kidney Disease \and Hyperparameter Optimization \and Machine Learning \and Random Search \and Clinical Prediction}
+\end{abstract}
+
+\section{Introduction}
+
+Chronic kidney disease is a long-term clinical condition associated with progressive loss of renal function and increased risk of morbidity, mortality, and healthcare burden. Machine learning methods have been explored for CKD prediction because they can model nonlinear relationships among demographic, laboratory, and clinical variables. Despite promising results, the reliability of such models depends on dataset quality, validation design, preprocessing, and model selection procedures.
+
+Hyperparameter optimization is a central but sometimes underreported part of model development. Different HPO strategies may produce similar performance on small benchmark datasets but diverge in computational cost and robustness when applied to larger clinical datasets. This study evaluates HPO methods for CKD prediction across two datasets to examine both predictive performance and runtime efficiency.
+
+The paper avoids claims of clinical deployment readiness. Instead, it presents a comparative experimental analysis intended to support reproducible model development and more transparent reporting of optimization choices.
+
+\section{Literature Review}
+
+Prior work has applied decision trees, support vector machines, ensemble methods, and neural networks to CKD prediction. Studies using the UCI CKD dataset often report high classification performance, although the small sample size and missingness patterns require careful validation. Larger critical-care datasets such as eICU offer broader patient diversity but introduce additional challenges including cohort definition, temporal abstraction, missing clinical measurements, and access restrictions.
+
+Hyperparameter optimization has been studied extensively in general machine learning. Grid Search is simple but inefficient in high-dimensional search spaces. Random Search can be more effective under limited budgets because not all hyperparameters have equal importance. Bayesian optimization, including Tree-structured Parzen Estimators, uses previous evaluations to guide later trials. CMA-ES provides an evolutionary strategy for continuous optimization, while Hyperband allocates resources adaptively across configurations. In clinical prediction studies, reporting standards such as TRIPOD and TRIPOD-AI emphasize transparent model development, validation, and limitations, while PROBAST supports structured risk-of-bias assessment.
+
+\section{Dataset Description}
+
+\subsection{UCI Chronic Kidney Disease Dataset}
+
+The UCI CKD dataset is a public tabular dataset commonly used for CKD prediction experiments. It includes clinical and laboratory attributes such as age, blood pressure, serum creatinine, hemoglobin, albumin, sugar, red blood cell indicators, and CKD class labels. The dataset is small and contains missing values, making leakage-safe preprocessing especially important.
+
+\subsection{eICU Dataset}
+
+The eICU Collaborative Research Database is a large multi-center critical-care database available through PhysioNet after credentialed access. For this study, an eICU-derived CKD prediction cohort is considered. Because eICU is substantially larger and more heterogeneous than the UCI dataset, it provides a useful setting for evaluating HPO scalability and runtime behavior. Raw eICU data are not redistributed in this repository.
+
+\section{Methodology}
+
+The experimental workflow consisted of dataset loading, leakage-aware preprocessing, model definition, HPO, cross-validation, metric calculation, and runtime comparison. Missing numeric variables were imputed using training-fold estimates, categorical variables were encoded from training-fold mappings, and numeric features were scaled where required by the model family.
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{\centering Placeholder for workflow diagram.}}
+\caption{Overall workflow for preprocessing, hyperparameter optimization, model training, and evaluation.}
+\label{fig:workflow}
+\end{figure}
+
+Let $\mathcal{A}$ denote a learning algorithm, $\lambda \in \Lambda$ a hyperparameter configuration, $\mathcal{D}_{train}$ the training data, and $\mathcal{M}$ a validation metric. The HPO objective is formulated as:
+
+\begin{equation}
+\lambda^{*} = \arg\max_{\lambda \in \Lambda} \mathcal{M}\left(\mathcal{A}_{\lambda}, \mathcal{D}_{train}, \mathcal{D}_{val}\right).
+\end{equation}
+
+Precision, recall, and F1-score are defined as:
+
+\begin{equation}
+Precision = \frac{TP}{TP + FP},
+\end{equation}
+
+\begin{equation}
+Recall = \frac{TP}{TP + FN},
+\end{equation}
+
+\begin{equation}
+F1 = 2 \cdot \frac{Precision \cdot Recall}{Precision + Recall}.
+\end{equation}
+
+Repeated validation results are reported as:
+
+\begin{equation}
+\bar{x} \pm s = \frac{1}{n}\sum_{i=1}^{n}x_i \pm \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}.
+\end{equation}
+
+\section{Hyperparameter Optimization Methods}
+
+\subsection{Grid Search}
+
+Grid Search evaluates every configuration from a predefined discrete grid. It is transparent and reproducible but can be computationally expensive, especially when the search space grows or when only a subset of parameters strongly influences performance.
+
+\subsection{Random Search}
+
+Random Search samples configurations from specified distributions. It often performs well under fixed budgets because it explores more unique values for influential hyperparameters than a coarse grid.
+
+\subsection{Bayesian Optimization and TPE}
+
+Bayesian optimization uses a surrogate model to select promising configurations based on previous evaluations. The Tree-structured Parzen Estimator approach models promising and less promising regions of the search space and samples configurations expected to improve performance.
+
+\subsection{CMA-ES}
+
+Covariance Matrix Adaptation Evolution Strategy is an evolutionary optimization method suited to continuous parameter spaces. It adapts a covariance matrix over iterations to improve search efficiency, although runtime may increase when evaluations are expensive.
+
+\subsection{Hyperband}
+
+Hyperband allocates resources adaptively by evaluating many configurations with small budgets and promoting better-performing configurations to larger budgets. It is useful when partial training budgets provide informative estimates of final performance.
+
+\section{Experimental Setup}
+
+The experiments used Random Forest, XGBoost, and SVM classifiers. The random seed was fixed at 42. A 5-fold stratified cross-validation protocol was used to preserve class balance across folds. The same search budget was used across HPO methods where applicable. Preprocessing transformations were fitted only on the training folds and then applied to validation folds to reduce leakage risk.
+
+The main evaluation metrics were F1-score, precision, recall, and runtime. F1-score was emphasized because CKD prediction can involve imbalanced class distributions where accuracy alone may be misleading.
+
+\section{Results and Discussion}
+
+On the UCI CKD dataset, the best summarized result was obtained using SVM with Random Search, reaching 99.33\% $\pm$ 0.36\% F1-score. Random Forest and XGBoost also achieved high F1-scores above 98\% under several HPO methods. These results are consistent with the relatively structured nature of the UCI benchmark, but they should be interpreted cautiously because the dataset is small.
+
+On the eICU-derived dataset, Random Search achieved the best summarized F1-score of 94.54\%. Grid Search performed slightly worse and required substantially more runtime. This suggests that exhaustive search over a fixed grid may be inefficient when the dataset is larger and the computational budget is constrained.
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{\centering Placeholder for ROC curve.}}
+\caption{Receiver operating characteristic curve for the best-performing CKD prediction configuration.}
+\label{fig:roc}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{\centering Placeholder for confusion matrix.}}
+\caption{Confusion matrix for the selected model configuration on the held-out evaluation split.}
+\label{fig:confusion}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{\centering Placeholder for F1-score versus runtime comparison.}}
+\caption{Comparison of F1-score and runtime across hyperparameter optimization strategies.}
+\label{fig:f1_runtime}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.85\linewidth}{\centering Placeholder for HPO method comparison chart.}}
+\caption{Performance comparison of Grid Search, Random Search, Bayesian Optimization/TPE, CMA-ES, and Hyperband.}
+\label{fig:hpo_comparison}
+\end{figure}
+
+\section{Statistical Validation}
+
+For the UCI dataset, model performance was summarized using mean and standard deviation across stratified validation folds. This provides a limited estimate of variability under the selected validation design. For larger clinical data, additional repeated validation, temporal validation, site-level validation, and external validation would be required before making stronger generalization claims. Statistical comparisons should account for repeated measurements across folds and shared data splits.
+
+\section{Limitations}
+
+This study has several limitations. The UCI CKD dataset is small and may not represent the diversity of real clinical populations. The eICU cohort depends on local cohort construction choices and may not directly generalize to non-critical-care settings. The repository does not include raw clinical data because of licensing, privacy, and credentialing requirements. The current results summarize experimental model development and should not be interpreted as clinical validation.
+
+\section{Ethical Considerations}
+
+CKD prediction models may influence clinical interpretation if used improperly. Any clinical use would require institutional review, privacy-preserving data handling, fairness assessment, external validation, calibration analysis, and clinician oversight. This repository is intended for research and reproducibility only. It does not provide a diagnostic tool or medical advice.
+
+\section{Reproducibility Statement}
+
+The experiments use random seed 42, 5-fold stratified cross-validation, equalized search budgets across HPO methods where applicable, and training-fold-only preprocessing. Results are reported as mean $\pm$ standard deviation when repeated validation estimates are available. Raw UCI and eICU datasets must be obtained from their official sources, and private clinical data must not be committed to the repository.
+
+\section{Conclusion}
+
+This study compared five HPO methods for CKD prediction across a small public benchmark and a larger critical-care dataset. Random Search produced the best reported UCI configuration when paired with SVM and achieved the strongest summarized eICU result, while also providing the most practical time-performance tradeoff. Grid Search remained easy to interpret but became inefficient and less effective on the larger dataset under the evaluated budget. The results emphasize that HPO strategy and runtime should be reported transparently in clinical machine learning studies.
+
+\section{Future Scope}
+
+Future work should include external validation across independent clinical sites, calibration assessment, decision-curve analysis, fairness evaluation, and explainability methods such as SHAP. Additional work should also examine temporal cohort definitions, missingness mechanisms, and robustness under different preprocessing strategies.
+
+\bibliographystyle{splncs04}
+\bibliography{references}
+
+\end{document}

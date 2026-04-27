@@ -1,0 +1,11 @@
+dataset,hpo_method,runtime_minutes,performance_rank,efficiency_rank
+UCI,Random Search,8.5,1,1
+UCI,Hyperband,7.2,3,2
+UCI,Bayesian Optimization/TPE,12.8,2,3
+UCI,CMA-ES,18.4,4,4
+UCI,Grid Search,25.6,5,5
+eICU,Random Search,47.5,1,1
+eICU,Hyperband,41.2,4,2
+eICU,Bayesian Optimization/TPE,69.8,2,3
+eICU,CMA-ES,94.6,3,4
+eICU,Grid Search,138.3,5,5
