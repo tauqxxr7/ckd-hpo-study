@@ -1,0 +1,2 @@
+Command attempted: python -m py_compile src/*.py via bash -lc
+Result: POSIX-style wildcard check could not run because WSL/bash is not usable in this Windows environment. Windows-safe syntax check passed; see syntax_check.txt.

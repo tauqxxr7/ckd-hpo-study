@@ -27,7 +27,7 @@
 - Independent-site validation is listed as future work.
 - Deployment claims are avoided.
 
-## Clinical Deployment Limitation
+## Clinical Use Limitation
 
 - The repository is for research reproducibility and method comparison only.
 - The manuscript does not present the model as a diagnostic tool.

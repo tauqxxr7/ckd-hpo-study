@@ -1,0 +1,2 @@
+Command: python -m py_compile (Get-ChildItem src -Filter *.py).FullName
+Result: Windows-safe syntax check passed for all src/*.py files.

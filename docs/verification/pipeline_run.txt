@@ -1,0 +1,15 @@
+Loading UCI CKD dataset...
+Skipping XGBoost because the optional xgboost package is not installed.
+Running HPO for Random Forest...
+  Grid Search: F1=100.0%, precision=100.0%, recall=100.0%
+  Random Search: F1=98.99%, precision=100.0%, recall=98.0%
+Running HPO for SVM...
+  Grid Search: F1=100.0%, precision=100.0%, recall=100.0%
+  Random Search: F1=100.0%, precision=100.0%, recall=100.0%
+Saved metrics to C:\Users\TAUQEER BHARDE\Documents\Codex\2026-04-27\you-are-working-on-my-github\results\performance_table.csv
+Saved runtime summary to C:\Users\TAUQEER BHARDE\Documents\Codex\2026-04-27\you-are-working-on-my-github\results\runtime_table.csv
+Generating figures...
+Saved C:\Users\TAUQEER BHARDE\Documents\Codex\2026-04-27\you-are-working-on-my-github\paper\figures\f1_score_comparison.png
+Saved C:\Users\TAUQEER BHARDE\Documents\Codex\2026-04-27\you-are-working-on-my-github\paper\figures\runtime_comparison.png
+Saved C:\Users\TAUQEER BHARDE\Documents\Codex\2026-04-27\you-are-working-on-my-github\paper\figures\f1_vs_runtime.png
+Saved C:\Users\TAUQEER BHARDE\Documents\Codex\2026-04-27\you-are-working-on-my-github\paper\figures\hpo_method_comparison.png

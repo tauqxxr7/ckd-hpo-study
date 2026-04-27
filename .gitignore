@@ -5,6 +5,7 @@ __pycache__/
 *.pyc
 .matplotlib-cache/
 *.pkl
+results/models/
 
 # Raw/private clinical data must not be committed.
 data/raw/

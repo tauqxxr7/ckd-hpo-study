@@ -1,0 +1,17 @@
+# Results Preview
+
+## performance_table.csv
+```csv
+dataset,model,hpo_method,f1_score,std_dev,precision,recall
+UCI,Random Forest,Grid Search,100.0,0.81,100.0,100.0
+UCI,Random Forest,Random Search,98.99,0.96,100.0,98.0
+UCI,SVM,Grid Search,100.0,0.96,100.0,100.0
+UCI,SVM,Random Search,100.0,0.96,100.0,100.0
+```
+
+## runtime_table.csv
+```csv
+dataset,hpo_method,runtime_minutes,performance_rank,efficiency_rank
+UCI,Grid Search,0.14579999999999999,1,1
+UCI,Random Search,0.15889999999999999,1,2
+```

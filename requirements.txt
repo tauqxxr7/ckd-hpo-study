@@ -3,7 +3,6 @@ pandas
 scikit-learn
 matplotlib
 seaborn
-jupyter
 ucimlrepo
 
 # Optional advanced HPO/model packages:
@@ -12,3 +11,4 @@ ucimlrepo
 # scikit-optimize
 # hyperopt
 # cma
+# jupyter

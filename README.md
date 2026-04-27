@@ -8,6 +8,42 @@ Author: **Tauqeer Sameer Bharde**
 Artificial Intelligence and Data Science Engineering  
 SIES Graduate School of Technology, Mumbai, Maharashtra, India
 
+## Verification & Reproducibility Status
+
+Latest verification: 2026-04-27, final repository audit.
+
+Reproduce the public pipeline with:
+
+```bash
+pip install -r requirements.txt
+python src/main.py
+```
+
+Generated outputs:
+
+- `results/performance_table.csv`
+- `results/runtime_table.csv`
+- `paper/figures/f1_score_comparison.png`
+- `paper/figures/runtime_comparison.png`
+- `paper/figures/f1_vs_runtime.png`
+- `paper/figures/hpo_method_comparison.png`
+
+Verification proof files are stored in [`docs/verification/`](docs/verification/).
+
+The public runnable pipeline reproduces UCI CKD experiments. eICU requires credentialed PhysioNet access and is not distributed or reproduced by the public pipeline. Trained model artifacts are generated locally in `results/models/` and ignored by Git.
+
+## Repository Quality Checklist
+
+- [x] End-to-end pipeline runs
+- [x] Figures generated
+- [x] Results CSV generated
+- [x] Paper manuscript included
+- [x] References included
+- [x] Ethics statement included
+- [x] Reproducibility statement included
+- [x] Raw clinical data excluded
+- [x] Reviewer checklist included
+
 ## Project Overview
 
 This repository provides a journal-ready and runnable research package for comparing hyperparameter optimization (HPO) strategies for chronic kidney disease (CKD) prediction. The included end-to-end pipeline downloads the public UCI CKD dataset, preprocesses it, trains CPU-compatible machine learning models, runs Grid Search and Random Search, evaluates metrics, saves model artifacts, and regenerates result figures.
@@ -89,30 +125,32 @@ The intended reproducibility protocol is:
 
 ```text
 ckd-hpo-study/
-├── README.md
-├── paper/
-│   ├── main.tex
-│   ├── references.bib
-│   ├── REVIEWER_CHECKLIST.md
-│   └── figures/
-├── data/
-│   └── README.md
-├── notebooks/
-│   └── ckd_hpo_experiments.ipynb
-├── src/
-│   ├── data_loader.py
-│   ├── main.py
-│   ├── preprocessing.py
-│   ├── train_models.py
-│   ├── optimize_hpo.py
-│   ├── evaluate.py
-│   └── plot_results.py
-├── results/
-│   ├── performance_table.csv
-│   └── runtime_table.csv
-├── requirements.txt
-├── LICENSE
-└── .gitignore
+|-- README.md
+|-- docs/
+|   `-- verification/
+|-- paper/
+|   |-- main.tex
+|   |-- references.bib
+|   |-- REVIEWER_CHECKLIST.md
+|   `-- figures/
+|-- data/
+|   `-- README.md
+|-- notebooks/
+|   `-- ckd_hpo_experiments.ipynb
+|-- src/
+|   |-- data_loader.py
+|   |-- main.py
+|   |-- preprocessing.py
+|   |-- train_models.py
+|   |-- optimize_hpo.py
+|   |-- evaluate.py
+|   `-- plot_results.py
+|-- results/
+|   |-- performance_table.csv
+|   `-- runtime_table.csv
+|-- requirements.txt
+|-- LICENSE
+`-- .gitignore
 ```
 
 ## Citation
