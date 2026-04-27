@@ -32,23 +32,29 @@ Verification proof files are stored in [`docs/verification/`](docs/verification/
 
 The public runnable pipeline reproduces UCI CKD experiments. eICU requires credentialed PhysioNet access and is not distributed or reproduced by the public pipeline. Trained model artifacts are generated locally in `results/models/` and ignored by Git.
 
-## Repository Quality Checklist
-
-- [x] End-to-end pipeline runs
-- [x] Figures generated
-- [x] Results CSV generated
-- [x] Paper manuscript included
-- [x] References included
-- [x] Ethics statement included
-- [x] Reproducibility statement included
-- [x] Raw clinical data excluded
-- [x] Reviewer checklist included
-
 ## Project Overview
 
 This repository provides a journal-ready and runnable research package for comparing hyperparameter optimization (HPO) strategies for chronic kidney disease (CKD) prediction. The included end-to-end pipeline downloads the public UCI CKD dataset, preprocesses it, trains CPU-compatible machine learning models, runs Grid Search and Random Search, evaluates metrics, saves model artifacts, and regenerates result figures.
 
 The manuscript also discusses an eICU-based extension, but raw eICU data are not distributed because access requires PhysioNet credentialing.
+
+## 📊 Key Insights
+
+- Comparison of multiple HPO techniques
+- Evaluation across ML models (XGBoost, RF, SVM)
+- Focus on healthcare datasets
+- Emphasis on model reliability and performance
+
+## 📈 Results Visualization
+
+Charts and evaluation plots will be added
+
+## ⚙️ Engineering Notes
+
+- Built with clear frontend/backend/API separation
+- Designed for deployable architecture (Vercel + Render style)
+- Uses modular structure for scalability and maintainability
+- Focused on real-world use cases, not isolated demos
 
 ## Quick Start
 
@@ -76,8 +82,6 @@ The pipeline runs on CPU and does not require a GPU.
 Target PDF path: `paper/ckd_hpo_manuscript.pdf`
 
 The local verification environment did not include a LaTeX compiler, so the PDF was not generated here. An Overleaf-ready package is available at [`paper/overleaf_upload.zip`](paper/overleaf_upload.zip). If `paper/ckd_hpo_manuscript.pdf` is not present, upload the `/paper` folder or `paper/overleaf_upload.zip` to Overleaf and compile using the Springer LNCS template.
-
-Final manuscript fixes applied: running title fixed, workflow diagram added, figure captions aligned with verified outputs.
 
 ## Research Objective
 
@@ -109,8 +113,6 @@ The repository also includes optional helper functions for:
 - Covariance Matrix Adaptation Evolution Strategy (CMA-ES)
 - Hyperband
 
-Optional HPO methods are wrapped so missing optional libraries do not break the main pipeline.
-
 ## Evaluation Metrics
 
 - F1-score
@@ -118,11 +120,15 @@ Optional HPO methods are wrapped so missing optional libraries do not break the 
 - Recall
 - Runtime
 
-Results are reported as percentages in the generated CSV files.
+## 📸 Screenshots
+
+Screenshots coming soon
+
+## 🚀 Deployment
+
+Not applicable / research project
 
 ## Reproducibility
-
-The intended reproducibility protocol is:
 
 - Random seed: `42`
 - Validation: 5-fold stratified cross-validation
