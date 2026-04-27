@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+os.environ.setdefault("MPLCONFIGDIR", str(ROOT_DIR / ".matplotlib-cache"))
 
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
 RESULTS_DIR = ROOT_DIR / "results"
 FIGURES_DIR = ROOT_DIR / "paper" / "figures"
 
@@ -98,12 +101,48 @@ def plot_f1_vs_runtime(
     return output_path
 
 
+def plot_hpo_method_comparison(
+    performance_csv: Path = RESULTS_DIR / "performance_table.csv",
+    output_dir: Path = FIGURES_DIR,
+) -> Path:
+    """Generate a chart summarizing HPO method performance across datasets."""
+    output_dir = _prepare_output_dir(output_dir)
+    data = pd.read_csv(performance_csv)
+    summary = (
+        data.groupby(["dataset", "hpo_method"], as_index=False)
+        .agg(mean_f1_score=("f1_score", "mean"), mean_std_dev=("std_dev", "mean"))
+        .sort_values(["dataset", "mean_f1_score"], ascending=[True, False])
+    )
+
+    plt.figure(figsize=(12, 6))
+    sns.pointplot(
+        data=summary,
+        x="hpo_method",
+        y="mean_f1_score",
+        hue="dataset",
+        dodge=0.35,
+        markers="o",
+        linestyles="-",
+    )
+    plt.xlabel("HPO method")
+    plt.ylabel("Mean F1-score across models (%)")
+    plt.title("HPO method comparison by dataset")
+    plt.xticks(rotation=30, ha="right")
+    plt.tight_layout()
+
+    output_path = output_dir / "hpo_method_comparison.png"
+    plt.savefig(output_path, dpi=300)
+    plt.close()
+    return output_path
+
+
 def generate_all_plots() -> list[Path]:
     """Generate all summary figures."""
     return [
         plot_f1_comparison(),
         plot_runtime_comparison(),
         plot_f1_vs_runtime(),
+        plot_hpo_method_comparison(),
     ]
 
 
