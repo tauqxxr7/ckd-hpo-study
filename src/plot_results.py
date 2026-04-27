@@ -9,6 +9,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 os.environ.setdefault("MPLCONFIGDIR", str(ROOT_DIR / ".matplotlib-cache"))
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import FancyArrowPatch
 import pandas as pd
 import seaborn as sns
 
@@ -127,7 +128,7 @@ def plot_hpo_method_comparison(
     )
     plt.xlabel("HPO method")
     plt.ylabel("Mean F1-score across models (%)")
-    plt.title("HPO method comparison by dataset")
+    plt.title("Grid Search and Random Search comparison")
     plt.xticks(rotation=30, ha="right")
     plt.tight_layout()
 
@@ -137,9 +138,64 @@ def plot_hpo_method_comparison(
     return output_path
 
 
+def plot_workflow_diagram(output_dir: Path = FIGURES_DIR) -> Path:
+    """Generate the experiment workflow diagram used in the manuscript."""
+    output_dir = _prepare_output_dir(output_dir)
+    steps = [
+        "Dataset\nLoading",
+        "Preprocessing",
+        "Train/Test\nSplit",
+        "HPO",
+        "Model\nTraining",
+        "Evaluation",
+        "Results/\nFigures",
+    ]
+    x_positions = range(len(steps))
+
+    fig, ax = plt.subplots(figsize=(13, 3.2))
+    ax.set_xlim(-0.6, len(steps) - 0.4)
+    ax.set_ylim(0, 1)
+    ax.axis("off")
+
+    for index, (x_position, label) in enumerate(zip(x_positions, steps)):
+        ax.text(
+            x_position,
+            0.5,
+            label,
+            ha="center",
+            va="center",
+            fontsize=11,
+            fontweight="bold",
+            bbox={
+                "boxstyle": "round,pad=0.35,rounding_size=0.08",
+                "facecolor": "#f4f7fb",
+                "edgecolor": "#315a89",
+                "linewidth": 1.4,
+            },
+        )
+        if index < len(steps) - 1:
+            ax.add_patch(
+                FancyArrowPatch(
+                    (x_position + 0.38, 0.5),
+                    (x_position + 0.72, 0.5),
+                    arrowstyle="-|>",
+                    mutation_scale=16,
+                    linewidth=1.6,
+                    color="#315a89",
+                )
+            )
+
+    output_path = output_dir / "workflow_diagram.png"
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
+    plt.close()
+    return output_path
+
+
 def generate_all_plots() -> list[Path]:
     """Generate all summary figures."""
     return [
+        plot_workflow_diagram(),
         plot_f1_comparison(),
         plot_runtime_comparison(),
         plot_f1_vs_runtime(),

@@ -10,8 +10,10 @@
 \begin{document}
 
 \title{Comparative Evaluation of Hyperparameter Optimization Techniques for Chronic Kidney Disease Prediction: A Multi-Dataset Study}
+\titlerunning{HPO for CKD Prediction}
 
 \author{Tauqeer Sameer Bharde}
+\authorrunning{T. S. Bharde}
 
 \institute{Artificial Intelligence and Data Science Engineering,\\
 SIES Graduate School of Technology, Mumbai, Maharashtra, India}
@@ -53,8 +55,8 @@ The experimental workflow consisted of dataset loading, leakage-aware preprocess
 
 \begin{figure}[t]
 \centering
-\fbox{\parbox{0.85\linewidth}{\centering Placeholder for workflow diagram.}}
-\caption{Overall workflow for preprocessing, hyperparameter optimization, model training, and evaluation.}
+\includegraphics[width=0.95\linewidth]{figures/workflow_diagram.png}
+\caption{End-to-end public pipeline workflow from dataset loading through preprocessing, train-test splitting, HPO, model training, evaluation, and result generation.}
 \label{fig:workflow}
 \end{figure}
 
@@ -116,35 +118,35 @@ The main evaluation metrics were F1-score, precision, recall, and runtime. F1-sc
 
 On the UCI CKD dataset, the verified public pipeline produced high held-out performance across the dependency-light model set. Random Forest with Grid Search achieved 100.0\% F1-score, 100.0\% precision, and 100.0\% recall, while Random Forest with Random Search achieved 98.99\% F1-score, 100.0\% precision, and 98.0\% recall. SVM achieved 100.0\% F1-score, 100.0\% precision, and 100.0\% recall under both Grid Search and Random Search. The UCI results therefore show strong performance within this benchmark protocol, but the small dataset size means that these estimates should be interpreted as reproducibility-run performance rather than evidence for clinical use.
 
-On the eICU-derived dataset, Random Search produced the strongest summarized configuration, with Random Forest reaching 94.54\% $\pm$ 0.42\% F1-score, 94.90\% precision, and 94.18\% recall. XGBoost with Random Search was close at 94.36\% F1-score, while SVM with Random Search reached 93.74\%. Grid Search was lower for each model family on the eICU summary table, including 92.31\% for Random Forest, 92.88\% for XGBoost, and 91.96\% for SVM. This pattern suggests that exhaustive fixed-grid evaluation was less efficient under the larger-dataset budget considered here.
+The following eICU findings are summarized credentialed-extension results and are not reproduced by the public UCI pipeline. On the eICU-derived dataset, Random Search produced the strongest summarized configuration, with Random Forest reaching 94.54\% $\pm$ 0.42\% F1-score, 94.90\% precision, and 94.18\% recall. XGBoost with Random Search was close at 94.36\% F1-score, while SVM with Random Search reached 93.74\%. Grid Search was lower for each model family on the eICU summary table, including 92.31\% for Random Forest, 92.88\% for XGBoost, and 91.96\% for SVM. This pattern suggests that exhaustive fixed-grid evaluation was less efficient under the larger-dataset budget considered here.
 
 The runtime comparison further supports this interpretation. On the eICU setting, Random Search required 47.5 minutes and ranked first for both performance and efficiency, while Grid Search required 138.3 minutes and ranked last for efficiency. Hyperband had the lowest summarized eICU runtime at 41.2 minutes, but its best summarized F1-score was below Random Search. Bayesian Optimization/TPE provided competitive performance with moderate runtime, and CMA-ES was slower in the summarized setting. These findings indicate that optimization strategy should be evaluated jointly with runtime cost, especially for larger clinical datasets.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.95\linewidth]{figures/f1_score_comparison.png}
-\caption{F1-score comparison across datasets, model families, and hyperparameter optimization strategies.}
+\caption{F1-score comparison for Grid Search and Random Search across Random Forest and SVM in the verified public UCI pipeline.}
 \label{fig:f1_comparison}
 \end{figure}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.9\linewidth]{figures/runtime_comparison.png}
-\caption{Runtime comparison for hyperparameter optimization strategies in the generated results table.}
+\caption{Runtime comparison for Grid Search and Random Search in the verified public UCI pipeline.}
 \label{fig:runtime_comparison}
 \end{figure}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.85\linewidth]{figures/f1_vs_runtime.png}
-\caption{Best summarized F1-score versus runtime for each dataset and hyperparameter optimization method.}
+\caption{Best verified UCI F1-score versus runtime for Grid Search and Random Search.}
 \label{fig:f1_runtime}
 \end{figure}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.95\linewidth]{figures/hpo_method_comparison.png}
-\caption{Mean F1-score comparison of Grid Search, Random Search, Bayesian Optimization/TPE, CMA-ES, and Hyperband across model families.}
+\caption{Mean F1-score comparison of Grid Search and Random Search in the verified public UCI pipeline.}
 \label{fig:hpo_comparison}
 \end{figure}
 

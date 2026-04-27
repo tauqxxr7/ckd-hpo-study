@@ -77,6 +77,8 @@ Target PDF path: `paper/ckd_hpo_manuscript.pdf`
 
 The local verification environment did not include a LaTeX compiler, so the PDF was not generated here. An Overleaf-ready package is available at [`paper/overleaf_upload.zip`](paper/overleaf_upload.zip). If `paper/ckd_hpo_manuscript.pdf` is not present, upload the `/paper` folder or `paper/overleaf_upload.zip` to Overleaf and compile using the Springer LNCS template.
 
+Final manuscript fixes applied: running title fixed, workflow diagram added, figure captions aligned with verified outputs.
+
 ## Research Objective
 
 The objective is to compare Grid Search, Random Search, Bayesian Optimization/TPE, CMA-ES, and Hyperband for tuning machine learning models used in CKD prediction. The runnable pipeline focuses on dependency-light Grid Search and Random Search so that new users can reproduce baseline results with one command.
