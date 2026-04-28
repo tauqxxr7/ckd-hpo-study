@@ -6,39 +6,31 @@
 ![Reproducible Research](https://img.shields.io/badge/Reproducible-Research-purple)
 ![MIT License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-Reproducible clinical machine learning pipeline comparing hyperparameter optimization strategies for CKD prediction with Springer-style reporting, generated figures, and verification artifacts.
+**A reproducible clinical ML research package that compares hyperparameter optimization strategies for Chronic Kidney Disease prediction, generates verified result tables and figures, and includes a Springer LNCS-style manuscript.**
 
-Paper title: **Comparative Evaluation of Hyperparameter Optimization Techniques for Chronic Kidney Disease Prediction: A Multi-Dataset Study**
+**Paper:** *Comparative Evaluation of Hyperparameter Optimization Techniques for Chronic Kidney Disease Prediction: A Multi-Dataset Study*
 
-Author: **Tauqeer Sameer Bharde**  
-Artificial Intelligence and Data Science Engineering  
-SIES Graduate School of Technology, Mumbai, Maharashtra, India
+**Author:** Tauqeer Sameer Bharde, Artificial Intelligence and Data Science Engineering, SIES Graduate School of Technology, Mumbai
+
+## TL;DR
+
+- One command runs the public UCI CKD experiment: `python src/main.py`
+- Pipeline covers data loading, leakage-safe preprocessing, HPO, model training, evaluation, and plots
+- Verified outputs are committed in `results/`, `paper/figures/`, and `docs/verification/`
+- Public code reproduces UCI CKD results; eICU is discussed only as a credentialed-data extension
+- This is a research/reproducibility package, not a diagnostic product
 
 ## Results Snapshot
 
-Public pipeline: **UCI Chronic Kidney Disease dataset**
+| Public Pipeline Result | Held-out F1 |
+| --- | ---: |
+| SVM + Grid Search | 100.0% |
+| SVM + Random Search | 100.0% |
+| Random Forest + Random Search | 98.99% |
 
-- **SVM + Grid Search:** 100.0% held-out F1
-- **SVM + Random Search:** 100.0% held-out F1
-- **Random Forest + Random Search:** 98.99% held-out F1
+Dataset: **UCI Chronic Kidney Disease**.
 
-These results reflect benchmark reproducibility-run performance, not clinical deployment readiness.
-
-## Quick Start
-
-```bash
-git clone https://github.com/tauqxxr7/ckd-hpo-study.git
-cd ckd-hpo-study
-pip install -r requirements.txt
-python src/main.py
-```
-
-Generated outputs:
-
-- `results/performance_table.csv`
-- `results/runtime_table.csv`
-- `paper/figures/*.png`
-- local trained models in `results/models/` ignored by Git
+Interpretation: benchmark reproducibility-run performance, not clinical-use evidence.
 
 ## Visual Outputs
 
@@ -51,6 +43,36 @@ Generated outputs:
 ![F1 vs runtime](paper/figures/f1_vs_runtime.png)
 
 ![HPO method comparison](paper/figures/hpo_method_comparison.png)
+
+## Why This Matters
+
+Clinical ML papers often report model scores without enough detail about tuning, leakage prevention, runtime cost, or reproducibility. This repository packages the full experiment path so a reviewer or recruiter can inspect the code, rerun the benchmark, audit outputs, and read the manuscript from the same repo.
+
+## Quick Start
+
+```bash
+git clone https://github.com/tauqxxr7/ckd-hpo-study.git
+cd ckd-hpo-study
+pip install -r requirements.txt
+python src/main.py
+```
+
+This regenerates:
+
+- `results/performance_table.csv`
+- `results/runtime_table.csv`
+- `paper/figures/*.png`
+- local trained models in `results/models/` ignored by Git
+
+## Key Contributions
+
+- Built an end-to-end CKD prediction pipeline that runs from dataset loading to verified figures
+- Compared Grid Search and Random Search under the public UCI reproducibility pipeline
+- Reported performance and runtime together instead of optimizing score alone
+- Used scikit-learn pipelines to keep imputation, encoding, scaling, and fitting leakage-safe
+- Included Springer LNCS manuscript source, bibliography, reviewer checklist, and Overleaf upload package
+- Separated public UCI reproducibility from credentialed eICU discussion to avoid unverifiable claims
+- Added verification artifacts so results are inspectable without rerunning the project
 
 ## Research Paper
 
@@ -68,15 +90,6 @@ Verification artifacts are available in [`docs/verification/`](docs/verification
 - [`syntax_check.txt`](docs/verification/syntax_check.txt)
 - [`results_preview.md`](docs/verification/results_preview.md)
 - [`figures_preview.md`](docs/verification/figures_preview.md)
-
-## Key Contributions
-
-- End-to-end reproducible CKD prediction pipeline
-- Grid Search vs Random Search comparison
-- Runtime/performance trade-off analysis
-- Springer LNCS manuscript included
-- Verification artifacts included
-- Public UCI pipeline separated from credentialed eICU discussion
 
 ## Repository Quality Checklist
 
@@ -125,19 +138,17 @@ ckd-hpo-study/
 
 ## Technical Notes
 
-- Modular ML pipeline with separate loading, preprocessing, training, HPO, evaluation, and plotting modules
-- Leakage-safe preprocessing through scikit-learn pipelines fitted inside training folds
-- Reproducible experiment execution using seed `42`
-- Generated figures and CSV outputs committed for reviewer inspection
-- Verification artifacts captured under `docs/verification/`
+- Modular ML pipeline: loading, preprocessing, training, HPO, evaluation, plotting
+- Leakage-safe preprocessing fitted inside training folds
+- Random seed: `42`
 - CPU-only execution; no GPU required
+- Generated figures and CSVs committed for reviewer inspection
+- Raw/private clinical data excluded by `.gitignore`
 
 ## Datasets
 
 - **UCI CKD:** public benchmark used by the runnable pipeline
 - **eICU:** credentialed PhysioNet dataset discussed as a summarized extension; raw data are not distributed
-
-Raw/private clinical data are excluded by `.gitignore`.
 
 ## Limitations
 
@@ -145,6 +156,10 @@ Raw/private clinical data are excluded by `.gitignore`.
 - eICU requires credentialed PhysioNet access
 - No external clinical validation yet
 - Not a diagnostic tool
+
+## Final Note
+
+This project is designed to show research engineering discipline: reproducible experiments, defensible claims, clear clinical-data boundaries, generated artifacts, and a manuscript-ready reporting structure in one repository.
 
 ## Citation
 
