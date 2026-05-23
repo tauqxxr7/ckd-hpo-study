@@ -145,6 +145,13 @@ ckd-hpo-study/
 - Generated figures and CSVs committed for reviewer inspection
 - Raw/private clinical data excluded by `.gitignore`
 
+## 🛡 Engineering & Security Notes
+
+- Environment variables and private data paths are excluded from version control.
+- Generated artifacts and model outputs are separated from source and paper assets.
+- The repository is structured to support reproducible experiments and reviewer inspection.
+- Raw clinical data is intentionally excluded from the tracked repository state.
+
 ## Datasets
 
 - **UCI CKD:** public benchmark used by the runnable pipeline

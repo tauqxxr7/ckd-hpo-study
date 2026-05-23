@@ -5,6 +5,9 @@ __pycache__/
 *.pyc
 .matplotlib-cache/
 *.pkl
+dist/
+build/
+.DS_Store
 results/models/
 
 # Raw/private clinical data must not be committed.
